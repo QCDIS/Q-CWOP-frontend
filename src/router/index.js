@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Ping from '../views/Ping.vue'
+import WizardVuetify from '../views/WizardVuetify.vue'
+import Planner from '../views/Planner.vue'
 import Tosca from '../views/Tosca.vue'
 import Wizard from '../components/Wizard.vue'
-import Wizardv2 from '../components/Wizardv2.vue'
 
 Vue.use(VueRouter)
 
@@ -30,10 +30,17 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/Courses.vue')
   },
+
   {
-    path: '/ping',
-    name: 'Ping',
-    component: Ping
+    path: '/WizardVuetify',
+    name: 'WizardVuetify',
+    component: WizardVuetify
+  },
+
+  {
+    path: '/planner',
+    name: 'Planner',
+    component: Planner
   },
 
   {
@@ -47,12 +54,6 @@ Vue.use(VueRouter)
     name: 'Wizard',
     component: Wizard,
   },
-
-  {
-    path: '/wizardv2',
-    name: 'Wizardv2',
-    component: Wizardv2,
-  }
 
 ]
 

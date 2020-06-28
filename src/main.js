@@ -7,7 +7,7 @@ import VueGoodWizard from 'vue-good-wizard';
 import Vuex from "vuex";
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-// import vuetify from './plugins/vuetify';
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 // Vue.use(BootstrapVue);
@@ -56,6 +56,6 @@ const store = new Vuex.Store({
 new Vue({
   router,
   store,
-  // vuetify,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
