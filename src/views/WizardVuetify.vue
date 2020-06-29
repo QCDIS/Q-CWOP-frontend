@@ -55,6 +55,20 @@
         </v-form>
         <v-btn color="primary" @click="getToscaViaFiles">Generate</v-btn>
         <v-btn text @click="e6 = 3">Previous</v-btn>
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Found solution</v-card-title>
+
+            <v-card-text>Your IaaS solution has sucessfully been downloaded</v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+
+              <v-btn color="green darken-1" text @click="restart">Return</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-stepper-content>
     </v-stepper>
   </v-app>
@@ -71,6 +85,7 @@ export default {
       "IOT"
     ],
     continue_button1: false,
+    dialog: false,
     e6: 1,
     chosen_application: "",
     workflow_file: null,
@@ -118,6 +133,7 @@ export default {
           document.body.appendChild(link);
           link.click();
           console.log("Sucess");
+          this.dialog = true;
         })
         .catch(error => {
           // eslint-disable-next-line
