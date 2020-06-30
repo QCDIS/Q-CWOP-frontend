@@ -10,7 +10,7 @@
             <v-list-item-title>IaaS Planner</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item to="/planner-old">
+        <v-list-item to="/optimizer">
           <v-list-item-action>
             <v-icon>mdi-file-cloud</v-icon>
           </v-list-item-action>
