@@ -30,15 +30,23 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col class="text-center">
-              <p> Select the performance models that you wish to compare </p>
-                  <v-file-input 
-                  show-size 
-                  counter 
-                  multiple 
-                  label="Insert performance models"
-                  accept=".yaml, .yml"
-                  v-model="performance_files"
-                  :rules="rules"></v-file-input>
+            <p>Select the performance models that you wish to compare</p>
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-file-input
+                show-size
+                counter
+                multiple
+                label="Insert performance models"
+                accept=".yaml, .yml"
+                v-model="performance_files"
+                :rules="rules"
+              ></v-file-input>
+            </v-form>
+              <v-btn
+                color="primary"
+                @click="test"
+                :disabled="!(valid && performance_files !== null)"
+              >Compare</v-btn>
 
           </v-col>
         </v-row>
@@ -52,18 +60,32 @@
 
 <script>
 export default {
-  components: {
-  },
+  components: {},
   props: {
     source: String
   },
   data: () => ({
     drawer: null,
     performance_files: null,
-    rules: [files => !files || !files.some(file => file.size > 2e6) || 'Performance file size cannot exceed 2MB',
-            files => !files || files.length > 1 || 'You need to specify at least two performance files'
-            
-        ]
-  })
+    rules: [
+      files =>
+        !files ||
+        !files.some(file => file.size > 2e6) ||
+        "Performance file size cannot exceed 2MB",
+      files =>
+        !files ||
+        files.length > 1 ||
+        "You need to specify at least two performance files"
+    ],
+    valid: false
+  }),
+  methods: {
+    comparePerformance() {
+      console.log("Backend stuff");
+    },
+      validate () {
+        return this.$refs.form.validate()
+      },
+  }
 };
 </script>
