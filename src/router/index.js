@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import WizardVuetify from '../views/WizardVuetify.vue'
-import Planner from '../views/Planner.vue'
-import Tosca from '../views/Tosca.vue'
-import Wizard from '../components/Wizard.vue'
+import Plannerv2 from '../views/Plannerv2.vue'
+import Plannerv1 from '../views/Plannerv1.vue'
 
 Vue.use(VueRouter)
 
@@ -22,37 +20,17 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
-  {
-    path: '/courses',
-    name: 'Courses',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Courses.vue')
-  },
-
-  {
-    path: '/WizardVuetify',
-    name: 'WizardVuetify',
-    component: WizardVuetify
-  },
 
   {
     path: '/planner',
-    name: 'Planner',
-    component: Planner
+    name: 'Plannerv2',
+    component: Plannerv2
   },
 
   {
-    path: '/tosca',
-    name: 'Tosca',
-    component: Tosca,
-  },
-
-  {
-    path: '/wizard',
-    name: 'Wizard',
-    component: Wizard,
+    path: '/planner-old',
+    name: 'Plannerv1',
+    component: Plannerv1
   },
 
 ]
