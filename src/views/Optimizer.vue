@@ -27,28 +27,43 @@
     </v-app-bar>
 
     <v-main>
-      <v-container class="fill-height" fluid>
+      <v-container class="fill-height" fluid>    
+          <v-form ref="form" v-model="valid" lazy-validation>     
         <v-row align="center" justify="center">
-          <v-col class="text-center">
-            <p>Select the performance models that you wish to compare</p>
-            <v-form ref="form" v-model="valid" lazy-validation>
+          <v-col cols="12">
+            <p>Select the workflow of your application</p>
+            
               <v-file-input
                 show-size
                 counter
                 multiple
-                label="Insert performance models"
+                label="Insert workflow file in cwl format"
+                accept=".cwl"
+                v-model="workflow_file"
+                :rules="rules_workflow"
+              ></v-file-input>
+            
+              </v-col>
+           <v-col cols="12">
+               <p>Select the performance models that you wish to compare</p>
+               <v-file-input
+                show-size
+                counter
+                multiple
+                label="Insert performance models in yaml format"
                 accept=".yaml, .yml"
                 v-model="performance_files"
                 :rules="rules"
               ></v-file-input>
+            </v-col>
+            </v-row>
             </v-form>
-              <v-btn
+        <v-row align="center" justify="center">
+            <v-btn
                 color="primary"
                 @click="test"
-                :disabled="!(valid && performance_files !== null)"
+                :disabled="!(valid && performance_files !== null && workflow_file !== null)"
               >Compare</v-btn>
-
-          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -67,6 +82,7 @@ export default {
   data: () => ({
     drawer: null,
     performance_files: null,
+    workflow_file: null,
     rules: [
       files =>
         !files ||
@@ -77,6 +93,9 @@ export default {
         files.length > 1 ||
         "You need to specify at least two performance files"
     ],
+    rules_workflow: [files => !files ||
+        !files.some(file => file.size > 2e6) ||
+        "Performance file size cannot exceed 2MB"],
     valid: false
   }),
   methods: {
