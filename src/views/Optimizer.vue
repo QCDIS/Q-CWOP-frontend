@@ -59,19 +59,26 @@
             </v-row>
             </v-form>
         <v-row align="center" justify="center">
+          <v-col cols="2">
             <v-btn
                 color="primary"
                 @click="comparePerformance"
                 :disabled="!(valid && performance_files !== null && workflow_file !== null)"
               >Compare</v-btn>
+          </v-col>
+          <v-col cols="2">
+               <v-btn
+                color="primary"
+                @click="restart"
+                :disabled="!activate_data_iterator"
+              >Clear</v-btn>
+          </v-col>
         </v-row>
-        <v-row>
           <v-data-iterator
       :items="items"
-      :items-per-page.sync="itemsPerPage"
+      :items-per-page.sync="items_per_page"
+      v-if="activate_data_iterator"
       hide-default-footer
-      loading
-      loading-text="test"
     >
      <template v-slot:default="props">
         <v-row>
@@ -110,7 +117,6 @@
         </v-row>
       </template>
       </v-data-iterator>
-          </v-row>
       </v-container>
     </v-main>
     <v-footer color="indigo" app>
@@ -144,7 +150,8 @@ export default {
         !files.some(file => file.size > 2e6) ||
         "Performance file size cannot exceed 2MB"],
     valid: false,
-   itemsPerPage: 3,
+    activate_data_iterator: false,
+    items_per_page: 3,
       items: [
         {
           id: '',
@@ -187,6 +194,7 @@ export default {
         })
         .then(res => {
           this.items = res.data
+          this.activate_data_iterator = true
           console.log(res.data)
         //  this.filtered_performance_files = res.data
         })
@@ -199,6 +207,11 @@ export default {
       validate () {
         return this.$refs.form.validate()
       },
+
+      restart() {
+      this.$forceUpdate();
+      window.location.reload();
+    }
   }
 };
 </script>
