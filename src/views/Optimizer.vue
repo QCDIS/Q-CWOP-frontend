@@ -61,10 +61,56 @@
         <v-row align="center" justify="center">
             <v-btn
                 color="primary"
-                @click="test"
+                @click="comparePerformance"
                 :disabled="!(valid && performance_files !== null && workflow_file !== null)"
               >Compare</v-btn>
         </v-row>
+        <v-row>
+          <v-data-iterator
+      :items="items"
+      :items-per-page.sync="itemsPerPage"
+      hide-default-footer
+      loading
+      loading-text="test"
+    >
+     <template v-slot:default="props">
+        <v-row>
+          <v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="12"
+            sm="6"
+            md="4"
+            lg="3"
+          >
+            <v-card>
+              <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
+
+              <v-divider></v-divider>
+
+              <v-list dense>
+                <v-list-item>
+                  <v-list-item-content>File name:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ item.name }}</v-list-item-content>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Total costs:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ item.costs }}</v-list-item-content>
+                </v-list-item>
+
+                <v-list-item>
+                  <v-list-item-content>Makespan:</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ item.makespan }}</v-list-item-content>
+                </v-list-item>
+
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-row>
+      </template>
+      </v-data-iterator>
+          </v-row>
       </v-container>
     </v-main>
     <v-footer color="indigo" app>
@@ -74,6 +120,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   components: {},
   props: {
@@ -96,10 +143,57 @@ export default {
     rules_workflow: [files => !files ||
         !files.some(file => file.size > 2e6) ||
         "Performance file size cannot exceed 2MB"],
-    valid: false
+    valid: false,
+   itemsPerPage: 3,
+      items: [
+        {
+          id: '',
+          name: '',
+          costs: '',
+          makespan: ''
+        },
+        {
+          id: '',
+          name: '',
+          costs: '',
+          makespan: ''
+        },
+        {
+          id: '',
+          name: '',
+          costs: '',
+          makespan: ''
+        }
+      ],
   }),
   methods: {
     comparePerformance() {
+      let formData = new FormData();
+      let workflow_file = this.workflow_file[0];
+      let performance_files = this.performance_files;
+      formData.append("workflow_file", workflow_file);
+      // formData.append("performance_files", performance_files);
+      for( var i = 0; i < performance_files.length; i++ ){
+          let file = performance_files[i];
+
+          formData.append('performance_files', file);
+        }
+
+      axios
+        .post("http://127.0.0.1:5000/optimizer", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          this.items = res.data
+          console.log(res.data)
+        //  this.filtered_performance_files = res.data
+        })
+        .catch(error => {
+          // eslint-disable-next-line
+          console.error(error);
+        });
       console.log("Backend stuff");
     },
       validate () {
