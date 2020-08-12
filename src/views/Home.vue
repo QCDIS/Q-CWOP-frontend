@@ -15,7 +15,7 @@
             <v-icon>mdi-file-cloud</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Performance optimizer</v-list-item-title>
+            <v-list-item-title>Parameter optimizer</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

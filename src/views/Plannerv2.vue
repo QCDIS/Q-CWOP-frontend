@@ -2,8 +2,8 @@
   <v-app id="planner">
     <v-stepper v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
-        Select application
-        <small>Summarize if needed</small>
+        Select application type
+        <small></small>
       </v-stepper-step>
 
       <v-stepper-content step="1">
@@ -16,7 +16,7 @@
         <v-btn color="primary" @click="e6 = 2" :disabled="chosen_application === ''">Continue</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 2" step="2">Select workflow</v-stepper-step>
+      <v-stepper-step :complete="e6 > 2" step="2">Select application file</v-stepper-step>
 
       <v-stepper-content step="2">
         <v-file-input
@@ -29,25 +29,35 @@
         <v-btn text @click="e6 = 1">Previous</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Insert algorithm input</v-stepper-step>
+      <v-stepper-step :complete="e6 > 3" step="3">Configure algorithm input</v-stepper-step>
 
       <v-stepper-content step="3">
+         <p > One planning algorithm was detected for your application type, configure the parameters below: </p>
         <v-file-input
           multiple
-          label="Insert algorithm input"
+          label="Insert performance model"
           accept=".yaml, yml"
-          v-model="pcp_input_file"
+          v-model="pcp_performance_file"
         ></v-file-input>
-        <v-btn color="primary" @click="e6 = 4" :disabled="pcp_input_file === null">Continue</v-btn>
+        <v-file-input
+          multiple
+          label="Insert price model"
+          accept=".yaml, yml"
+          v-model="pcp_price_model_file"
+        ></v-file-input>
+        <v-btn color="primary" @click="e6 = 4" :disabled="pcp_performance_file === null">Continue</v-btn>
         <v-btn text @click="e6 = 2">Previous</v-btn>
       </v-stepper-content>
 
       <v-stepper-step step="4">Configure QoS demands</v-stepper-step>
       <v-stepper-content step="4">
+
         <v-form>
           <v-container>
             <v-row>
+
               <v-col cols="12" sm="6" md="3">
+
                 <v-text-field label="Specify deadline for the entire workflow" placeholder="50" v-model="deadline"></v-text-field>
               </v-col>
             </v-row>
@@ -55,6 +65,10 @@
         </v-form>
         <v-btn color="primary" @click="getToscaViaFiles" :disabled="deadline === ''">Generate</v-btn>
         <v-btn text @click="e6 = 3">Previous</v-btn>
+        
+        
+        
+        
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline">Found solution</v-card-title>
@@ -89,7 +103,8 @@ export default {
     e6: 1,
     chosen_application: "",
     workflow_file: null,
-    pcp_input_file: null,
+    pcp_performance_file: null,
+    pcp_price_model_file: null,
     deadline: ""
   }),
   methods: {
@@ -116,9 +131,9 @@ export default {
     getToscaViaFiles() {
       let formData = new FormData();
       let workflow_file = this.workflow_file[0];
-      let pcp_input_file = this.pcp_input_file[0];
+      let pcp_performance_file = this.pcp_performance_file[0];
       formData.append("workflow_file", workflow_file);
-      formData.append("input_file", pcp_input_file);
+      formData.append("input_file", pcp_performance_file);
 
       axios
         .post("http://127.0.0.1:5000/upload", formData, {
