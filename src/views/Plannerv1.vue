@@ -122,7 +122,7 @@ export default {
         // Executed when @stepper-finished event is triggered
         getToscaViaUrl() {
             //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
-            const path = `http://127.0.0.1:5000/tosca_url?workflow_url=${this.$store.state.workflow_url}&input_url=${this.$store.state.input_url}`
+            const path = `http://10.0.96.163:3000/tosca_url?workflow_url=${this.$store.state.workflow_url}&input_url=${this.$store.state.input_url}`
 
             axios.get(path)
                 .then((res) => {
@@ -148,7 +148,7 @@ export default {
           formData.append('workflow_file', workflow_file);
           formData.append('input_file', input_file)
 
-          axios.post('http://127.0.0.1:5000/upload',
+          axios.post('http://10.0.96.163:3000/upload',
               formData,
               {
                 headers: {
@@ -195,7 +195,7 @@ export default {
         },
 
         alert(payload) {
-            const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
+            const path = `http://10.0.96.163:3000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
             alert(path)
         }
     }
