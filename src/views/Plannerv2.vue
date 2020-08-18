@@ -2,7 +2,7 @@
   <v-app id="planner">
     <v-stepper v-model="e6" vertical>
       <v-stepper-step :complete="e6 > 1" step="1">
-        Select application type
+        Select your application type
         <small></small>
       </v-stepper-step>
 
@@ -13,7 +13,7 @@
           label="Select your type of application"
           v-model="chosen_application"
         ></v-overflow-btn>
-        <v-btn color="primary" @click="e6 = 2" :disabled="chosen_application === ''">Continue</v-btn>
+        <v-btn color="primary" @click="e6 = 2;" :disabled="chosen_application === ''">Continue</v-btn>
       </v-stepper-content>
 
       <v-stepper-step :complete="e6 > 2" step="2">Select application file</v-stepper-step>
@@ -160,6 +160,11 @@ export default {
     restart() {
       this.$forceUpdate();
       window.location.reload();
+    },
+
+    checkVersion() {
+      console.log("We have the latest version")
+
     }
   }
   // data: () => ({

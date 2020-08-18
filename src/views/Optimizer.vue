@@ -187,7 +187,7 @@ export default {
         }
 
       axios
-        .post("http://127.0.0.1:5000/optimizer", formData, {
+        .post("backend-service/optimizer", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
