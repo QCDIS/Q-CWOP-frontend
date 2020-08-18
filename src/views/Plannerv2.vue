@@ -110,7 +110,7 @@ export default {
   methods: {
     getToscaViaUrl() {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
-      const path = `http://10.0.96.163:3000/tosca_url?workflow_url=${this.$store.state.workflow_url}&input_url=${this.$store.state.input_url}`;
+      const path = `backend-service/tosca_url?workflow_url=${this.$store.state.workflow_url}&input_url=${this.$store.state.input_url}`;
 
       axios
         .get(path)
@@ -136,7 +136,7 @@ export default {
       formData.append("input_file", pcp_performance_file);
 
       axios
-        .post("http://10.0.96.163:3000/upload", formData, {
+        .post("backend-service/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
