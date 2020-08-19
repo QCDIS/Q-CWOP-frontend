@@ -136,7 +136,7 @@ export default {
       formData.append("input_file", pcp_performance_file);
       console.log("sending api request")
       axios
-        .post("http://52.186.166.180:3000/upload", formData, {
+        .post("http://52.147.220.82/:80/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
