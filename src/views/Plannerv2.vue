@@ -134,9 +134,9 @@ export default {
       let pcp_performance_file = this.pcp_performance_file[0];
       formData.append("workflow_file", workflow_file);
       formData.append("input_file", pcp_performance_file);
-
+      console.log("sending api request")
       axios
-        .post("http://52.186.166.180:31226/upload", formData, {
+        .post("http://52.186.166.180:3000/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
@@ -153,6 +153,7 @@ export default {
         })
         .catch(error => {
           // eslint-disable-next-line
+          console.log("no response")
           console.error(error);
         });
     },
