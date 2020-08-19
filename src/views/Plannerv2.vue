@@ -136,7 +136,7 @@ export default {
       formData.append("input_file", pcp_performance_file);
 
       axios
-        .post("backend-service/upload", formData, {
+        .post("http://10.0.96.163/upload", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
