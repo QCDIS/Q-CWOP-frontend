@@ -83,6 +83,21 @@
       </v-stepper-content>
     </v-stepper>
 
+   
+    <v-container fluid v-if="radio_button_visible">
+        <h3 class="blue--text text--darken-3"> Filter on available KPI's </h3>
+        <!-- <p>Filter on key performance indicators.
+        </p> -->
+        <v-radio-group v-model="radio_value" :mandatory="true">
+        <v-radio label="Makespan" value="makespan"></v-radio>
+        <v-radio label="Total costs" value="total_costs"></v-radio>
+        <v-radio label="Custom" value="custom"> </v-radio>
+        </v-radio-group>
+        <v-col class="text-left">
+        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="filterToscaTemplates">Normal</v-btn>
+        </v-col>
+    </v-container>
+ 
     <v-data-iterator
       :items="items"
       :items-per-page.sync="items_per_page"
@@ -121,6 +136,16 @@
   </v-app>
 </template>
 
+<style scoped>
+h3 {
+  text-align: left;
+}
+p {
+  text-align: left;
+}
+
+</style>
+
 <script>
 import axios from "axios";
 export default {
@@ -133,14 +158,16 @@ export default {
     ],
     continue_button1: false,
     dialog: false,
-    stepper_visible: true,
+    stepper_visible: false,
     e6: 1,
     chosen_application: "",
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
-    activate_data_iterator: false,
+    radio_button_visible: true,
+    activate_data_iterator: true,
+    radio_value: "",
     items_per_page: 3,
       items: [
         {
@@ -186,6 +213,7 @@ export default {
 
     getToscaViaFiles() {
       this.stepper_visible = false;
+      this.radio_button_visible = true;
       this.activate_data_iterator = true;
     //   let formData = new FormData();
     //   let workflow_file = this.workflow_file[0];
@@ -215,6 +243,10 @@ export default {
     //       console.log("no response");
     //       console.error(error);
     //     });
+    },
+
+    filterToscaTemplates() {
+        console.log("do filtering here")
     },
 
     restart() {
