@@ -71,9 +71,9 @@
 
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
-            <v-card-title class="headline">Found solution</v-card-title>
+            <v-card-title class="headline">Error</v-card-title>
 
-            <v-card-text>Your IaaS solution has sucessfully been downloaded</v-card-text>
+            <v-card-text>Didn't receive proper response from backend</v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -114,7 +114,7 @@
     >
       <template v-slot:default="props">
         <v-row>
-          <v-col v-for="item in props.items" :key="item.name" cols="2" sm="7" md="6" lg="6">
+          <v-col v-for="item in props.items" :key="item.name" cols="2" sm="7" md="3" lg="6">
             <v-card>
               <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
 
@@ -205,15 +205,15 @@ export default {
     loading:false,
     continue_button1: false,
     dialog: false,
-    stepper_visible: false,
+    stepper_visible: true,
     e6: 1,
     chosen_application: "",
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
-    radio_button_visible: true,
-    activate_data_iterator: true,
+    radio_button_visible: false,
+    activate_data_iterator: false,
     radio_value: "",
     items_per_page: 2,
       items: [
@@ -292,6 +292,7 @@ export default {
           // eslint-disable-next-line
           console.log("no response");
           console.error(error);
+          this.dialog = true;
         });
     },
 
