@@ -95,15 +95,15 @@
         <v-radio label="Total costs" value="total_cost"></v-radio>
         <v-radio label="Custom" value="custom"> </v-radio>
         </v-radio-group>
-        <v-col class="text-left">
+        <v-row>
+        <v-col class="text-left" cols="auto">
         <v-btn v-if="radio_button_visible" outlined left color="primary" @click="filterToscaTemplates">Filter</v-btn>
         </v-col>
-        <v-col class="text-center">
-        <v-btn class="mx-2" fab dark large color="cyan" v-if="radio_button_visible" @click="restart">
-        Change parameters
-        <v-icon right dark>mdi-pencil</v-icon>
-        </v-btn>
+        <v-col>
+        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="restart">Adjust parameters</v-btn>
         </v-col>
+        </v-row>
+        
     </v-container>
  
     <v-data-iterator
