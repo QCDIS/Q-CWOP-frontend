@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Plannerv3 from '../views/Plannerv3.vue'
 import Plannerv2 from '../views/Plannerv2.vue'
 import Optimizer from '../views/Optimizer.vue'
 import Plannerv1 from '../views/Plannerv1.vue'
@@ -29,6 +30,11 @@ Vue.use(VueRouter)
   },
 
   {
+    path: '/plannerv3',
+    name: 'Plannerv3',
+    component: Plannerv3
+  },
+  {
     path: '/optimizer',
     name: 'Optimizer',
     component: Optimizer
@@ -39,6 +45,7 @@ Vue.use(VueRouter)
     name: 'Plannerv1',
     component: Plannerv1
   },
+  
 
 ]
 
