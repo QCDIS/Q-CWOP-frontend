@@ -30,7 +30,7 @@
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
           <v-col class="text-center">
-            <Plannerv2></Plannerv2>
+            <Plannerv3></Plannerv3>
           </v-col>
         </v-row>
       </v-container>
@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import Plannerv2 from "./Plannerv2.vue";
+import Plannerv3 from "./Plannerv3.vue";
 export default {
   components: {
-    Plannerv2
+    Plannerv3
   },
   props: {
     source: String
