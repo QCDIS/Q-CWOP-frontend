@@ -64,7 +64,9 @@
             </v-row>
           </v-container>
         </v-form>
-        <v-btn color="primary" @click="getToscaViaFiles" :disabled="deadline === ''">Generate</v-btn>
+        <v-btn color="primary" @click="getToscaViaFiles" :disabled="deadline === ''"
+        :loading="loading"
+        >Generate</v-btn>
         <v-btn text @click="e6 = 3">Previous</v-btn>
 
         <v-dialog v-model="dialog" max-width="290">
@@ -90,11 +92,17 @@
         </p> -->
         <v-radio-group v-model="radio_value" :mandatory="true">
         <v-radio label="Makespan" value="makespan"></v-radio>
-        <v-radio label="Total costs" value="total_costs"></v-radio>
+        <v-radio label="Total costs" value="total_cost"></v-radio>
         <v-radio label="Custom" value="custom"> </v-radio>
         </v-radio-group>
         <v-col class="text-left">
-        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="filterToscaTemplates">Normal</v-btn>
+        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="filterToscaTemplates">Filter</v-btn>
+        </v-col>
+        <v-col class="text-center">
+        <v-btn class="mx-2" fab dark large color="cyan" v-if="radio_button_visible" @click="restart">
+        Change parameters
+        <v-icon right dark>mdi-pencil</v-icon>
+        </v-btn>
         </v-col>
     </v-container>
  
@@ -115,12 +123,12 @@
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>File name:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.name }}</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ item.tosca_file_name }}</v-list-item-content>
                 </v-list-item>
 
                 <v-list-item>
                   <v-list-item-content>Total costs:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.costs }}</v-list-item-content>
+                  <v-list-item-content class="align-end">{{ item.total_cost }}</v-list-item-content>
                 </v-list-item>
 
                 <v-list-item>
@@ -144,6 +152,43 @@ p {
   text-align: left;
 }
 
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+  }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
 </style>
 
 <script>
@@ -156,40 +201,52 @@ export default {
       "Microservices",
       "IOT",
     ],
+    loader: null,
+    loading:false,
     continue_button1: false,
     dialog: false,
-    stepper_visible: false,
+    stepper_visible: true,
     e6: 1,
     chosen_application: "",
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
-    radio_button_visible: true,
-    activate_data_iterator: true,
+    radio_button_visible: false,
+    activate_data_iterator: false,
     radio_value: "",
     items_per_page: 3,
       items: [
         {
           id: '',
-          name: '',
-          costs: '',
+          tosca_file_name: '',
+          total_cost: '',
           makespan: ''
         },
         {
           id: '',
-          name: '',
-          costs: '',
+          tosca_file_name: '',
+          total_cost: '',
           makespan: ''
         },
         {
           id: '',
-          name: '',
-          costs: '',
+          tosca_file_name: '',
+          total_cost: '',
           makespan: ''
         }
       ],
   }),
+//    watch: {
+//       loader () {
+//         const l = this.loader
+//         this[l] = !this[l]
+
+//         setTimeout(() => (this[l] = false), 6000)
+
+//         this.loader = null
+//       },
+//     },
   methods: {
     getToscaViaUrl() {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
@@ -212,41 +269,49 @@ export default {
     },
 
     getToscaViaFiles() {
-      this.stepper_visible = false;
-      this.radio_button_visible = true;
-      this.activate_data_iterator = true;
-    //   let formData = new FormData();
-    //   let workflow_file = this.workflow_file[0];
-    //   let pcp_performance_file = this.pcp_performance_file[0];
-    //   formData.append("workflow_file", workflow_file);
-    //   formData.append("input_file", pcp_performance_file);
-    //   console.log("sending api request");
-    //   axios
-    //     .post("http://localhost:5001/upload", formData, {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((res) => {
-          
-    //         const url = window.URL.createObjectURL(new Blob([res.data]));
-    //         const link = document.createElement("a");
-    //         link.href = url;
-    //         link.setAttribute("download", "IaaS solution.yaml");
-    //         document.body.appendChild(link);
-    //         link.click();
-    //         console.log("Sucess");
-    //         this.dialog = true;
-    //     })
-    //     .catch((error) => {
-    //       // eslint-disable-next-line
-    //       console.log("no response");
-    //       console.error(error);
-    //     });
+      this.loader = 'loading'
+      const l = this.loader
+        this[l] = !this[l]
+
+      let formData = new FormData();
+      let workflow_file = this.workflow_file[0];
+      let pcp_performance_file = this.pcp_performance_file[0];
+      formData.append("workflow_file", workflow_file);
+      formData.append("input_file", pcp_performance_file);
+      console.log("sending api request");
+      axios
+        .post("http://localhost:5001/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+            this.stepper_visible = false
+            this.radio_button_visible = true
+            console.log(res.data)
+            console.log("Sucess");
+            this[l] = false
+            this.loader = null
+            // this.dialog = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log("no response");
+          console.error(error);
+        });
     },
 
     filterToscaTemplates() {
-        console.log("do filtering here")
+       axios
+      .get(`http://localhost:5001/performance_indicator/${this.radio_value}`)
+      .then(response => {
+        this.items = response.data
+        this.activate_data_iterator = true
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      });
     },
 
     restart() {
