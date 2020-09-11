@@ -114,7 +114,7 @@
     >
       <template v-slot:default="props">
         <v-row>
-          <v-col v-for="item in props.items" :key="item.name" cols="12" sm="6" md="4" lg="3">
+          <v-col v-for="item in props.items" :key="item.name" cols="2" sm="7" md="6" lg="6">
             <v-card>
               <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
 
@@ -205,24 +205,18 @@ export default {
     loading:false,
     continue_button1: false,
     dialog: false,
-    stepper_visible: true,
+    stepper_visible: false,
     e6: 1,
     chosen_application: "",
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
-    radio_button_visible: false,
-    activate_data_iterator: false,
+    radio_button_visible: true,
+    activate_data_iterator: true,
     radio_value: "",
-    items_per_page: 3,
+    items_per_page: 2,
       items: [
-        {
-          id: '',
-          tosca_file_name: '',
-          total_cost: '',
-          makespan: ''
-        },
         {
           id: '',
           tosca_file_name: '',
