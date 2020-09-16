@@ -9,7 +9,7 @@
       <v-stepper-content step="1">
         <v-overflow-btn
           class="my-2"
-          :items="dropdown_font"
+          :items="application_types"
           label="Select your type of application"
           v-model="chosen_application"
         ></v-overflow-btn>
@@ -29,10 +29,48 @@
         <v-btn text @click="e6 = 1">Previous</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Configure algorithm input</v-stepper-step>
+      <v-stepper-step :complete="e6 > 3" step="3">Select preferred cloud provider</v-stepper-step>
 
       <v-stepper-content step="3">
-        <p>One planning algorithm was detected for your application type, configure the parameters below:</p>
+        <v-overflow-btn
+          class="my-2"
+          :items="available_cloud_providers"
+          label="Select your preferred cloud proivder"
+          v-model="chosen_provider"
+        ></v-overflow-btn>
+
+        
+
+        <v-btn color="primary" @click="e6 = 4; getAvailableVms();" :disabled="chosen_provider === ''">Continue</v-btn>
+        <v-btn text @click="e6 = 2">Previous</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step :complete="e6 > 4" step="4">Select application file</v-stepper-step>
+      <v-stepper-content step="4">
+        <p>Two planning algorithm were detected for your application type, configure the parameters below:</p>
+        <!-- <p> Select preffered cloud provider </p> -->
+        <p> Available vms for your selected cloud proivder </P>
+        <v-simple-table height="300px">
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">id</th>
+                <th class="text-left">num_cpus</th>
+                <th class="text-left">mem_size</th>
+                <th class="text-left">disk_size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in vms" :key="item.id">
+                <td>{{ item.id }}</td>
+                <td>{{ item.num_cpus }}</td>
+                <td>{{ item.mem_size }}</td>
+                <td>{{ item.disk_size }}</td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+
         <v-file-input
           multiple
           label="Insert performance model"
@@ -45,12 +83,12 @@
           accept=".yaml, yml"
           v-model="pcp_price_model_file"
         ></v-file-input>
-        <v-btn color="primary" @click="e6 = 4" :disabled="pcp_performance_file === null">Continue</v-btn>
-        <v-btn text @click="e6 = 2">Previous</v-btn>
+        <v-btn color="primary" @click="e6 = 5" :disabled="pcp_performance_file === null">Continue</v-btn>
+        <v-btn text @click="e6 = 3">Previous</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="4">Configure QoS demands</v-stepper-step>
-      <v-stepper-content step="4">
+      <v-stepper-step step="5">Configure QoS demands</v-stepper-step>
+      <v-stepper-content step="5">
         <v-form>
           <v-container>
             <v-row>
@@ -70,7 +108,7 @@
           :disabled="deadline === ''"
           :loading="loading"
         >Generate</v-btn>
-        <v-btn text @click="e6 = 3">Previous</v-btn>
+        <v-btn text @click="e6 = 4">Previous</v-btn>
 
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
@@ -137,7 +175,11 @@
                 <v-list-item>
                   <v-list-item-content>File name:</v-list-item-content>
                   <v-list-item-content class="align-end">
-                    <a :href="item.tosca_file_name" v-text="item.tosca_file_name" @click.prevent="getToscaViaUrl(item)" />
+                    <a
+                      :href="item.tosca_file_name"
+                      v-text="item.tosca_file_name"
+                      @click.prevent="getToscaViaUrl(item)"
+                    />
                   </v-list-item-content>
                 </v-list-item>
 
@@ -209,12 +251,13 @@ p {
 import axios from "axios";
 export default {
   data: () => ({
-    dropdown_font: [
+    application_types: [
       "Regular Workflow",
       "Time-Constrained Workflow",
       "Microservices",
       "IOT",
     ],
+    available_cloud_providers: ["Azure", "Amazon", "Google Cloud"],
     loader: null,
     loading: false,
     continue_button1: false,
@@ -222,6 +265,7 @@ export default {
     stepper_visible: true,
     e6: 1,
     chosen_application: "",
+    chosen_provider: "",
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
@@ -244,19 +288,41 @@ export default {
         makespan: "",
       },
     ],
+    vms: [
+      // {
+      //   id: "",
+      //   num_cpus: "",
+      //   mem_size: "",
+      //   disk_size: "",
+      // },
+    ],
   }),
-  //    watch: {
-  //       loader () {
-  //         const l = this.loader
-  //         this[l] = !this[l]
+    //  watch: {
+    //     chosen_provider () {
+    //       const l = this.loader
+    //       this[l] = !this[l]
 
-  //         setTimeout(() => (this[l] = false), 6000)
+    //       setTimeout(() => (this[l] = false), 6000)
 
-  //         this.loader = null
-  //       },
-  //     },
+    //       this.loader = null
+    //     },
+    //   },
   methods: {
-    getToscaViaUrl({tosca_file_name}) {
+    getAvailableVms() {
+        axios
+        .get(`http://localhost:5001/get_vms/${this.chosen_provider}`)
+        .then((response) => {
+          this.vms = response.data;
+          // this.activate_data_iterator = true;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+
+    },
+    getToscaViaUrl({ tosca_file_name }) {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
       const path = `http://localhost:5001/uploads/${tosca_file_name}`;
 
