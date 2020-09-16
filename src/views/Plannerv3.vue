@@ -64,8 +64,11 @@
             </v-row>
           </v-container>
         </v-form>
-        <v-btn color="primary" @click="getToscaViaFiles" :disabled="deadline === ''"
-        :loading="loading"
+        <v-btn
+          color="primary"
+          @click="getToscaViaFiles"
+          :disabled="deadline === ''"
+          :loading="loading"
         >Generate</v-btn>
         <v-btn text @click="e6 = 3">Previous</v-btn>
 
@@ -85,27 +88,37 @@
       </v-stepper-content>
     </v-stepper>
 
-   
     <v-container fluid v-if="radio_button_visible">
-        <h3 class="blue--text text--darken-3"> Filter on available KPI's </h3>
-        <!-- <p>Filter on key performance indicators.
-        </p> -->
-        <v-radio-group v-model="radio_value" :mandatory="true">
+      <h3 class="blue--text text--darken-3">Filter on available KPI's</h3>
+      <!-- <p>Filter on key performance indicators.
+      </p>-->
+      <v-radio-group v-model="radio_value" :mandatory="true">
         <v-radio label="Makespan" value="makespan"></v-radio>
         <v-radio label="Total costs" value="total_cost"></v-radio>
-        <v-radio label="Custom" value="custom"> </v-radio>
-        </v-radio-group>
-        <v-row>
+        <v-radio label="Custom" value="custom"></v-radio>
+      </v-radio-group>
+      <v-row>
         <v-col class="text-left" cols="auto">
-        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="filterToscaTemplates">Filter</v-btn>
+          <v-btn
+            v-if="radio_button_visible"
+            outlined
+            left
+            color="primary"
+            @click="filterToscaTemplates"
+          >Filter</v-btn>
         </v-col>
         <v-col>
-        <v-btn v-if="radio_button_visible" outlined left color="primary" @click="restart">Adjust parameters</v-btn>
+          <v-btn
+            v-if="radio_button_visible"
+            outlined
+            left
+            color="primary"
+            @click="restart"
+          >Adjust parameters</v-btn>
         </v-col>
-        </v-row>
-        
+      </v-row>
     </v-container>
- 
+
     <v-data-iterator
       :items="items"
       :items-per-page.sync="items_per_page"
@@ -114,7 +127,7 @@
     >
       <template v-slot:default="props">
         <v-row>
-          <v-col v-for="item in props.items" :key="item.name" cols="2" sm="7" md="3" lg="6">
+          <v-col v-for="item in props.items" :key="item.name" cols="5" sm="7" md="3" lg="4">
             <v-card>
               <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
 
@@ -123,7 +136,9 @@
               <v-list dense>
                 <v-list-item>
                   <v-list-item-content>File name:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.tosca_file_name }}</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    <a :href="item.tosca_file_name" v-text="item.tosca_file_name" @click.prevent="getToscaViaUrl(item)" />
+                  </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item>
@@ -153,42 +168,41 @@ p {
 }
 
 .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
 <script>
@@ -202,7 +216,7 @@ export default {
       "IOT",
     ],
     loader: null,
-    loading:false,
+    loading: false,
     continue_button1: false,
     dialog: false,
     stepper_visible: true,
@@ -216,35 +230,35 @@ export default {
     activate_data_iterator: false,
     radio_value: "",
     items_per_page: 2,
-      items: [
-        {
-          id: '',
-          tosca_file_name: '',
-          total_cost: '',
-          makespan: ''
-        },
-        {
-          id: '',
-          tosca_file_name: '',
-          total_cost: '',
-          makespan: ''
-        }
-      ],
+    items: [
+      {
+        id: "",
+        tosca_file_name: "",
+        total_cost: "",
+        makespan: "",
+      },
+      {
+        id: "",
+        tosca_file_name: "",
+        total_cost: "",
+        makespan: "",
+      },
+    ],
   }),
-//    watch: {
-//       loader () {
-//         const l = this.loader
-//         this[l] = !this[l]
+  //    watch: {
+  //       loader () {
+  //         const l = this.loader
+  //         this[l] = !this[l]
 
-//         setTimeout(() => (this[l] = false), 6000)
+  //         setTimeout(() => (this[l] = false), 6000)
 
-//         this.loader = null
-//       },
-//     },
+  //         this.loader = null
+  //       },
+  //     },
   methods: {
-    getToscaViaUrl() {
+    getToscaViaUrl({tosca_file_name}) {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
-      const path = `backend-service/tosca_url?workflow_url=${this.$store.state.workflow_url}&input_url=${this.$store.state.input_url}`;
+      const path = `http://localhost:5001/uploads/${tosca_file_name}`;
 
       axios
         .get(path)
@@ -252,7 +266,7 @@ export default {
           const url = window.URL.createObjectURL(new Blob([res.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "IaaS solution.yaml");
+          link.setAttribute("download", `${tosca_file_name}.yaml`);
           document.body.appendChild(link);
           link.click();
         })
@@ -263,9 +277,9 @@ export default {
     },
 
     getToscaViaFiles() {
-      this.loader = 'loading'
-      const l = this.loader
-        this[l] = !this[l]
+      this.loader = "loading";
+      const l = this.loader;
+      this[l] = !this[l];
 
       let formData = new FormData();
       let workflow_file = this.workflow_file[0];
@@ -280,13 +294,13 @@ export default {
           },
         })
         .then((res) => {
-            this.stepper_visible = false
-            this.radio_button_visible = true
-            console.log(res.data)
-            console.log("Sucess");
-            this[l] = false
-            this.loader = null
-            // this.dialog = true;
+          this.stepper_visible = false;
+          this.radio_button_visible = true;
+          console.log(res.data);
+          console.log("Sucess");
+          this[l] = false;
+          this.loader = null;
+          // this.dialog = true;
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -297,16 +311,16 @@ export default {
     },
 
     filterToscaTemplates() {
-       axios
-      .get(`http://localhost:5001/performance_indicator/${this.radio_value}`)
-      .then(response => {
-        this.items = response.data
-        this.activate_data_iterator = true
-        console.log(response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      });
+      axios
+        .get(`http://localhost:5001/performance_indicator/${this.radio_value}`)
+        .then((response) => {
+          this.items = response.data;
+          this.activate_data_iterator = true;
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     restart() {
