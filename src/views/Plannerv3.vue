@@ -35,21 +35,49 @@
         <v-overflow-btn
           class="my-2"
           :items="available_cloud_providers"
-          label="Select your preferred cloud proivder"
+          label="Select your preferred cloud provider"
           v-model="chosen_provider"
         ></v-overflow-btn>
-
-        
-
-        <v-btn color="primary" @click="e6 = 4; getAvailableVms();" :disabled="chosen_provider === ''">Continue</v-btn>
+        <v-btn
+          color="primary"
+          @click="e6 = 4; getAvailableVms();"
+          :disabled="chosen_provider === ''"
+        >Continue</v-btn>
         <v-btn text @click="e6 = 2">Previous</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 4" step="4">Select application file</v-stepper-step>
+      <v-stepper-step :complete="e6 > 4" step="4">Configure VM's</v-stepper-step>
+
       <v-stepper-content step="4">
-        <p>Two planning algorithm were detected for your application type, configure the parameters below:</p>
+        <v-data-table
+          v-model="selected"
+          :headers="headers"
+          :items="vms"
+          item-key="id"
+          show-select
+          class="elevation-1"
+        >
+          <template v-slot:top>
+            <v-toolbar flat color="white">
+              <v-toolbar-title>Select VM's you would like the planner to use</v-toolbar-title>
+            </v-toolbar>
+          </template>
+        </v-data-table>
+
+        <v-btn
+        class="mt-4"
+          color="primary"
+          @click="e6 = 5; getAvailableVms();"
+          :disabled="chosen_provider === ''"
+        >Continue</v-btn>
+        <v-btn class="mt-4" text @click="e6 = 3">Previous</v-btn>
+      </v-stepper-content>
+
+      <v-stepper-step :complete="e6 > 5" step="5">Configre parameters</v-stepper-step>
+      <v-stepper-content step="5">
+        <!-- <p>Two planning algorithm were detected for your application type, configure the parameters below:</p> -->
         <!-- <p> Select preffered cloud provider </p> -->
-        <p> Available vms for your selected cloud proivder </P>
+        <p>Available vms for your selected cloud proivder</p>
         <v-simple-table height="300px">
           <template v-slot:default>
             <thead>
@@ -83,12 +111,12 @@
           accept=".yaml, yml"
           v-model="pcp_price_model_file"
         ></v-file-input>
-        <v-btn color="primary" @click="e6 = 5" :disabled="pcp_performance_file === null">Continue</v-btn>
-        <v-btn text @click="e6 = 3">Previous</v-btn>
+        <v-btn color="primary" @click="e6 = 6" :disabled="pcp_performance_file === null">Continue</v-btn>
+        <v-btn text @click="e6 = 4">Previous</v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="5">Configure QoS demands</v-stepper-step>
-      <v-stepper-content step="5">
+      <v-stepper-step step="6">Configure QoS demands</v-stepper-step>
+      <v-stepper-content step="6">
         <v-form>
           <v-container>
             <v-row>
@@ -108,7 +136,7 @@
           :disabled="deadline === ''"
           :loading="loading"
         >Generate</v-btn>
-        <v-btn text @click="e6 = 4">Previous</v-btn>
+        <v-btn text @click="e6 = 5">Previous</v-btn>
 
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
@@ -263,7 +291,7 @@ export default {
     continue_button1: false,
     dialog: false,
     stepper_visible: true,
-    e6: 1,
+    e6: 4,
     chosen_application: "",
     chosen_provider: "",
     workflow_file: null,
@@ -289,27 +317,39 @@ export default {
       },
     ],
     vms: [
-      // {
-      //   id: "",
-      //   num_cpus: "",
-      //   mem_size: "",
-      //   disk_size: "",
-      // },
+      {
+        id: "1",
+        num_cpus: "5",
+        mem_size: "100MB",
+        disk_size: "200MB",
+      },
+    ],
+    selected: [],
+    headers: [
+      {
+        text: "id",
+        align: "start",
+        sortable: false,
+        value: "id",
+      },
+      { text: "num_cpus", value: "num_cpus" },
+      { text: "mem_size", value: "mem_size" },
+      { text: "disk_size", value: "disk_size" },
     ],
   }),
-    //  watch: {
-    //     chosen_provider () {
-    //       const l = this.loader
-    //       this[l] = !this[l]
+  //  watch: {
+  //     chosen_provider () {
+  //       const l = this.loader
+  //       this[l] = !this[l]
 
-    //       setTimeout(() => (this[l] = false), 6000)
+  //       setTimeout(() => (this[l] = false), 6000)
 
-    //       this.loader = null
-    //     },
-    //   },
+  //       this.loader = null
+  //     },
+  //   },
   methods: {
     getAvailableVms() {
-        axios
+      axios
         .get(`http://localhost:5001/get_vms/${this.chosen_provider}`)
         .then((response) => {
           this.vms = response.data;
@@ -319,8 +359,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-
-
     },
     getToscaViaUrl({ tosca_file_name }) {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
