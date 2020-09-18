@@ -41,6 +41,7 @@
         <v-btn
           color="primary"
           @click="e6 = 4; getAvailableVms();"
+          :loading="loading"
           :disabled="chosen_provider === ''"
         >Continue</v-btn>
         <v-btn text @click="e6 = 2">Previous</v-btn>
@@ -50,7 +51,7 @@
 
       <v-stepper-content step="4">
         <v-data-table
-          v-model="selected"
+          v-model="selected_vms"
           :headers="headers"
           :items="vms"
           item-key="id"
@@ -60,15 +61,25 @@
           <template v-slot:top>
             <v-toolbar flat color="white">
               <v-toolbar-title>Select VM's you would like the planner to use</v-toolbar-title>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-file-input
+                class="mt-4"
+                label="Load custom VM list"
+                accept=".yml, .yaml"
+                v-model="custom_vm_list"
+              ></v-file-input>
+              <v-divider class="mx-4" inset vertical></v-divider>
+              <!-- <v-spacer></v-spacer> -->
+              <v-btn class="mt-2" color="primary" @click="loadVMList" :disabled="custom_vm_list === null">Load list</v-btn>
             </v-toolbar>
           </template>
         </v-data-table>
 
         <v-btn
-        class="mt-4"
+          class="mt-4"
           color="primary"
-          @click="e6 = 5; getAvailableVms();"
-          :disabled="chosen_provider === ''"
+          @click="e6 = 5;"
+          :disabled="selected_vms.length == 0"
         >Continue</v-btn>
         <v-btn class="mt-4" text @click="e6 = 3">Previous</v-btn>
       </v-stepper-content>
@@ -102,13 +113,13 @@
         <v-file-input
           multiple
           label="Insert performance model"
-          accept=".yaml, yml"
+          accept=".yaml, .yml"
           v-model="pcp_performance_file"
         ></v-file-input>
         <v-file-input
           multiple
           label="Insert price model"
-          accept=".yaml, yml"
+          accept=".yaml, .yml"
           v-model="pcp_price_model_file"
         ></v-file-input>
         <v-btn color="primary" @click="e6 = 6" :disabled="pcp_performance_file === null">Continue</v-btn>
@@ -277,6 +288,7 @@ p {
 
 <script>
 import axios from "axios";
+
 export default {
   data: () => ({
     application_types: [
@@ -294,6 +306,7 @@ export default {
     e6: 4,
     chosen_application: "",
     chosen_provider: "",
+    custom_vm_list: null,
     workflow_file: null,
     pcp_performance_file: null,
     pcp_price_model_file: null,
@@ -324,7 +337,7 @@ export default {
         disk_size: "200MB",
       },
     ],
-    selected: [],
+    selected_vms: [],
     headers: [
       {
         text: "id",
@@ -424,6 +437,37 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+        });
+    },
+
+    loadVMList() {
+      // this.loader = "loading";
+      // const l = this.loader;
+      // this[l] = !this[l];
+
+      let formData = new FormData();
+      let vm_list_file = this.custom_vm_list;
+      formData.append("file", vm_list_file);
+      console.log("sending api request");
+      axios
+        .post("http://localhost:5001/load_vm_list", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          console.log("Sucess");
+          this.vms = res.data
+          // this[l] = false;
+          // this.loader = null;
+          // this.dialog = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log("no response");
+          console.error(error);
+          this.dialog = true;
         });
     },
 
