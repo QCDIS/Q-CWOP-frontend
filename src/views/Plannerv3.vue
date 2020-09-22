@@ -89,7 +89,7 @@
         <!-- <p>Two planning algorithm were detected for your application type, configure the parameters below:</p> -->
         <!-- <p> Select preffered cloud provider </p> -->
         <p> Do you want to generate a performance model? If you have your own you can skip this step.</p>
-        <v-btn class="justify-start" color="green" dark @click="generatePCPInput">Generate</v-btn>
+        <v-btn class="justify-start" color="green" dark @click="getNumberOfTasks">Generate</v-btn>
         <v-flex xs12 offset-xs8>
         <!-- <v-file-input
           multiple
@@ -105,18 +105,33 @@
           <v-card>
             <v-card-title class="headline">Customise</v-card-title>
 
-            <v-card-text>We have detected 6 tasks in your workflow</v-card-text>
+            <v-card-text>We have detected {{number_of_tasks}} tasks in your workflow</v-card-text>
             <v-switch class="mx-4" v-model="text_field1" label="Select custom performance values for cheapest vm"></v-switch>
             <v-text-field
             class="mx-4"
-            label="Provide 6 performance values seperated by comma"
+            v-model="performance_values"
+            :label="`Provide ${number_of_tasks.toString()} performance values seperated by comma`"
             outlined
             :disabled="text_field1 === false"
           ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
 
-              <v-btn color="green darken-1" text @click="() => {dialog_input = false; e6 = 6}">Proceed</v-btn>
+              <v-btn color="green darken-1" text @click="generatePCPInput">Proceed</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialog_input2" max-width="490">
+          <v-card>
+            <v-card-title class="headline">Success</v-card-title>
+
+            <v-card-text>Input file has been successfully generated</v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="green darken-1" text @click="() => {dialog_input2 = false; e6 = 6}">Proceed</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -306,15 +321,18 @@ export default {
     loading: false,
     continue_button1: false,
     dialog: false,
-    dialog_input: true,
+    dialog_input: false,
+    dialog_input2: false,
     stepper_visible: true,
-    e6: 4,
+    e6: 2,
     chosen_application: "",
     chosen_provider: "",
+    performance_values: "",
     custom_vm_list: null,
     workflow_file: null,
     switch1: false,
     text_field1: false,
+    number_of_tasks: 0,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
@@ -374,6 +392,30 @@ export default {
   //     },
   //   },
   methods: {
+    getNumberOfTasks(){
+      let formData = new FormData();
+      let workflow_file = this.workflow_file[0];
+      formData.append("workflow_file", workflow_file);
+       console.log("sending api request");
+      axios
+        .post("http://localhost:5001/get_tasks", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          },
+        })
+        .then((res) => {
+          this.number_of_tasks = res.data
+          console.log("res.data");
+          this.dialog_input = true;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log("no response");
+          console.error(error);
+          this.dialog = true;
+        });
+
+    },
     generatePCPInput() {
       let formData = new FormData();
       let workflow_file = this.workflow_file[0];
@@ -399,7 +441,8 @@ export default {
           document.body.appendChild(link);
           link.click();
           console.log("Sucess");
-          this.dialog_input = true;
+          this.dialog_input = false;
+          this.dialog_input2 = true;
         })
         .catch((error) => {
           // eslint-disable-next-line
