@@ -101,12 +101,18 @@
         <v-btn text @click="e6 = 4">Previous</v-btn>
         </v-flex>
 
-        <v-dialog v-model="dialog_input" max-width="290">
+        <v-dialog v-model="dialog_input" max-width="490">
           <v-card>
-            <v-card-title class="headline">Success</v-card-title>
+            <v-card-title class="headline">Customise</v-card-title>
 
-            <v-card-text>Input file has been successfully generated</v-card-text>
-
+            <v-card-text>We have detected 6 tasks in your workflow</v-card-text>
+            <v-switch class="mx-4" v-model="text_field1" label="Select custom performance values for cheapest vm"></v-switch>
+            <v-text-field
+            class="mx-4"
+            label="Provide 6 performance values seperated by comma"
+            outlined
+            :disabled="text_field1 === false"
+          ></v-text-field>
             <v-card-actions>
               <v-spacer></v-spacer>
 
@@ -300,13 +306,15 @@ export default {
     loading: false,
     continue_button1: false,
     dialog: false,
-    dialog_input: false,
+    dialog_input: true,
     stepper_visible: true,
-    e6: 2,
+    e6: 4,
     chosen_application: "",
     chosen_provider: "",
     custom_vm_list: null,
     workflow_file: null,
+    switch1: false,
+    text_field1: false,
     pcp_performance_file: null,
     pcp_price_model_file: null,
     deadline: "",
