@@ -313,6 +313,7 @@ p {
 
 <script>
 import axios from "axios";
+axios.defaults.withCredentials = true
 
 export default {
   data: () => ({
@@ -343,7 +344,7 @@ export default {
     pcp_performance_file: null,
     pcp_price_model_file: null,
     formdata: null,
-    deadline: 0,
+    deadline: "",
     radio_button_visible: false,
     activate_data_iterator: false,
     radio_value: "",
