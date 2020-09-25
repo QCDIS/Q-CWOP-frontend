@@ -187,6 +187,20 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+                <v-dialog v-model="dialog_icpcp" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Error</v-card-title>
+
+            <v-card-text>Didn't find a solution for the given parameters, adjust the input and try again</v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn color="green darken-1" text @click="restart">Return</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-stepper-content>
     </v-stepper>
 
@@ -330,6 +344,7 @@ export default {
     dialog: false,
     dialog_input: false,
     dialog_input2: false,
+    dialog_icpcp: false,
     stepper_visible: true,
     e6: 1,
     chosen_application: "",
@@ -527,7 +542,7 @@ export default {
           // eslint-disable-next-line
           console.log("no response");
           console.error(error);
-          this.dialog = true;
+          this.dialog_icpcp = true;
         });
     },
 
