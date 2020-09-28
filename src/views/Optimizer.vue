@@ -50,7 +50,7 @@
                 show-size
                 counter
                 multiple
-                label="Insert performance models in yaml format"
+                label="Insert price and performance models in yaml format"
                 accept=".yaml, .yml"
                 v-model="performance_files"
                 :rules="rules"
@@ -85,10 +85,6 @@
           <v-col
             v-for="item in props.items"
             :key="item.name"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
           >
             <v-card>
               <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
@@ -187,7 +183,7 @@ export default {
         }
 
       axios
-        .post("backend-service/optimizer", formData, {
+        .post("http://localhost:5001/optimizer", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
