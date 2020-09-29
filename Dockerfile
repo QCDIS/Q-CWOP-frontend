@@ -8,12 +8,14 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+
+
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
-
 # Bundle app source
 COPY . .
 
 EXPOSE 8080
-CMD [ "npm", "run", "serve", "--port=8080" ]  
+
+CMD  sed -ie "s/host: \"http:\/\/localhost:5001\"/host: \"$BACKEND_URL\"/g" src/config.js && npm run serve --port=8080
