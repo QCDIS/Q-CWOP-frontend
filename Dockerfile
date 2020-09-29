@@ -18,4 +18,5 @@ COPY . .
 
 EXPOSE 8080
 
-CMD  sed -ie "s#host: \"http://localhost:5001\"/host: \"$BACKEND_URL\"#g" src/config.js && npm run serve --port=8080
+
+CMD sed -ie "s#host: \"http://localhost:5001\",#host: \"$BACKEND_URL\",#" src/config.js  && npm run serve --port=8080
