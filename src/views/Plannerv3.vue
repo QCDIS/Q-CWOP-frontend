@@ -327,6 +327,7 @@ p {
 
 <script>
 import axios from "axios";
+import config from "../config"
 axios.defaults.withCredentials = true
 
 export default {
@@ -421,12 +422,13 @@ export default {
       this.formdata.append("workflow_file", workflow_file);
       console.log("sending api request");
       axios
-        .post("http://localhost:5001/get_tasks", this.formdata, {
+        .post(`${config.host}/get_tasks`, this.formdata, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
+          console.log(config.host)
           this.number_of_tasks = res.data;
           console.log("res.data");
           this.dialog_input = true;
@@ -452,7 +454,7 @@ export default {
 
       console.log("sending api request");
       axios
-        .post("http://localhost:5001/generate", this.formdata, {
+        .post(`${config.host}/generate`, this.formdata, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -479,7 +481,7 @@ export default {
     getAvailableVms() {
       this.formdata = new FormData()
       axios
-        .get(`http://localhost:5001/get_vms/${this.chosen_provider}`)
+        .get(`${config.host}/get_vms/${this.chosen_provider}`)
         .then((response) => {
           this.vms = response.data;
           // this.activate_data_iterator = true;
@@ -491,7 +493,7 @@ export default {
     },
     getToscaViaUrl({ tosca_file_name }) {
       //const path = `http://127.0.0.1:5000/tosca?git_url=${this.$store.state.workflow_url}&performance_url=${this.$store.state.performance_url}&deadline_url=${this.$store.state.deadline_url}&price_url=${this.$store.state.price_url}`;
-      const path = `http://localhost:5001/uploads/${tosca_file_name}`;
+      const path = `${config.host}/uploads/${tosca_file_name}`;
 
       axios
         .get(path)
@@ -521,7 +523,7 @@ export default {
       this.formdata.append("input_file", this.pcp_performance_file[0]);
       console.log("sending api request");
       axios
-        .post(`http://localhost:5001/upload/${this.deadline}`, this.formdata, {
+        .post(`${config.host}/upload/${this.deadline}`, this.formdata, {
           headers: {
             "Content-Type": "multipart/form-data",
 
@@ -548,7 +550,7 @@ export default {
 
     filterToscaTemplates() {
       axios
-        .get(`http://localhost:5001/performance_indicator/${this.radio_value}`)
+        .get(`${config.host}/performance_indicator/${this.radio_value}`)
         .then((response) => {
           this.items = response.data;
           this.activate_data_iterator = true;
@@ -569,7 +571,7 @@ export default {
       this.formdata.append("file", vm_list_file);
       console.log("sending api request");
       axios
-        .post("http://localhost:5001/load_vm_list", this.formdata, {
+        .post(`${config.host}/load_vm_list`, this.formdata, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
