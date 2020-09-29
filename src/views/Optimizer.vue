@@ -1,6 +1,9 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+    >
       <v-list dense>
         <v-list-item to="/">
           <v-list-item-action>
@@ -21,17 +24,31 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="indigo" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar
+      app
+      color="indigo"
+      dark
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Optimizer</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
-      <v-container class="fill-height" fluid>    
-          <v-form ref="form" v-model="valid" lazy-validation>     
-        <v-row align="center" justify="center">
-          <v-col cols="12">
-            <p>Select the workflow of your application</p>
+      <v-container
+        class="fill-height"
+        fluid
+      >    
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+        >     
+          <v-row
+            align="center"
+            justify="center"
+          >
+            <v-col cols="12">
+              <p>Select the workflow of your application</p>
             
               <v-file-input
                 show-size
@@ -41,12 +58,11 @@
                 accept=".cwl"
                 v-model="workflow_file"
                 :rules="rules_workflow"
-              ></v-file-input>
-            
-              </v-col>
-           <v-col cols="12">
-               <p>Select the performance models that you wish to compare</p>
-               <v-file-input
+              />
+            </v-col>
+            <v-col cols="12">
+              <p>Select the performance models that you wish to compare</p>
+              <v-file-input
                 show-size
                 counter
                 multiple
@@ -54,68 +70,85 @@
                 accept=".yaml, .yml"
                 v-model="performance_files"
                 :rules="rules"
-              ></v-file-input>
+              />
             </v-col>
-            </v-row>
-            </v-form>
-        <v-row align="center" justify="center">
+          </v-row>
+        </v-form>
+        <v-row
+          align="center"
+          justify="center"
+        >
           <v-col cols="2">
             <v-btn
-                color="primary"
-                @click="comparePerformance"
-                :disabled="!(valid && performance_files !== null && workflow_file !== null)"
-              >Compare</v-btn>
+              color="primary"
+              @click="comparePerformance"
+              :disabled="!(valid && performance_files !== null && workflow_file !== null)"
+            >
+              Compare
+            </v-btn>
           </v-col>
           <v-col cols="2">
-               <v-btn
-                color="primary"
-                @click="restart"
-                :disabled="!activate_data_iterator"
-              >Clear</v-btn>
+            <v-btn
+              color="primary"
+              @click="restart"
+              :disabled="!activate_data_iterator"
+            >
+              Clear
+            </v-btn>
           </v-col>
         </v-row>
-          <v-data-iterator
-      :items="items"
-      :items-per-page.sync="items_per_page"
-      v-if="activate_data_iterator"
-      hide-default-footer
-    >
-     <template v-slot:default="props">
-        <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-          >
-            <v-card>
-              <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
+        <v-data-iterator
+          :items="items"
+          :items-per-page.sync="items_per_page"
+          v-if="activate_data_iterator"
+          hide-default-footer
+        >
+          <template v-slot:default="props">
+            <v-row>
+              <v-col
+                v-for="item in props.items"
+                :key="item.name"
+              >
+                <v-card>
+                  <v-card-title class="subheading font-weight-bold">
+                    {{ item.id }}
+                  </v-card-title>
 
-              <v-divider></v-divider>
+                  <v-divider />
 
-              <v-list dense>
-                <v-list-item>
-                  <v-list-item-content>File name:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.name }}</v-list-item-content>
-                </v-list-item>
+                  <v-list dense>
+                    <v-list-item>
+                      <v-list-item-content>File name:</v-list-item-content>
+                      <v-list-item-content class="align-end">
+                        {{ item.name }}
+                      </v-list-item-content>
+                    </v-list-item>
 
-                <v-list-item>
-                  <v-list-item-content>Total costs:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.costs }}</v-list-item-content>
-                </v-list-item>
+                    <v-list-item>
+                      <v-list-item-content>Total costs:</v-list-item-content>
+                      <v-list-item-content class="align-end">
+                        {{ item.costs }}
+                      </v-list-item-content>
+                    </v-list-item>
 
-                <v-list-item>
-                  <v-list-item-content>Makespan:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.makespan }}</v-list-item-content>
-                </v-list-item>
-
-              </v-list>
-            </v-card>
-          </v-col>
-        </v-row>
-      </template>
-      </v-data-iterator>
+                    <v-list-item>
+                      <v-list-item-content>Makespan:</v-list-item-content>
+                      <v-list-item-content class="align-end">
+                        {{ item.makespan }}
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-col>
+            </v-row>
+          </template>
+        </v-data-iterator>
       </v-container>
     </v-main>
-    <v-footer color="indigo" app>
+    <v-footer
+      color="indigo"
+      app
+    >
       <span class="white--text">&copy; University of Amsterdam</span>
     </v-footer>
   </v-app>

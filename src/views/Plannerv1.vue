@@ -1,12 +1,12 @@
 <template>
-<!-- <v-app> -->
-    <!-- <v-app-bar
+  <!-- <v-app> -->
+  <!-- <v-app-bar
       app
       color="primary"
       dark
     >
     </v-app-bar> -->
-    <!-- <v-content> -->
+  <!-- <v-content> -->
   <section class="section">
     <div class="container">
       <div class="columns">

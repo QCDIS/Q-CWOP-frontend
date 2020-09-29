@@ -29,7 +29,7 @@
       color="indigo"
       dark
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>
 
@@ -52,7 +52,9 @@
                   target="_blank"
                   v-on="on"
                 >
-                  <v-icon large>mdi-code-tags</v-icon>
+                  <v-icon large>
+                    mdi-code-tags
+                  </v-icon>
                 </v-btn>
               </template>
               <span>Source</span>

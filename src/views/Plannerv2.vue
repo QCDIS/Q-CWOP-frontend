@@ -1,9 +1,15 @@
 <template>
   <v-app id="planner">
-    <v-stepper v-model="e6" vertical>
-      <v-stepper-step :complete="e6 > 1" step="1">
+    <v-stepper
+      v-model="e6"
+      vertical
+    >
+      <v-stepper-step
+        :complete="e6 > 1"
+        step="1"
+      >
         Select your application type
-        <small></small>
+        <small />
       </v-stepper-step>
 
       <v-stepper-content step="1">
@@ -12,11 +18,22 @@
           :items="dropdown_font"
           label="Select your type of application"
           v-model="chosen_application"
-        ></v-overflow-btn>
-        <v-btn color="primary" @click="e6 = 2;" :disabled="chosen_application === ''">Continue</v-btn>
+        />
+        <v-btn
+          color="primary"
+          @click="e6 = 2;"
+          :disabled="chosen_application === ''"
+        >
+          Continue
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 2" step="2">Select application file</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 2"
+        step="2"
+      >
+        Select application file
+      </v-stepper-step>
 
       <v-stepper-content step="2">
         <v-file-input
@@ -24,62 +41,118 @@
           label="Insert your workflow file in cwl format"
           accept=".cwl"
           v-model="workflow_file"
-        ></v-file-input>
-        <v-btn color="primary" @click="e6 = 3" :disabled="workflow_file === null">Continue</v-btn>
-        <v-btn text @click="e6 = 1">Previous</v-btn>
+        />
+        <v-btn
+          color="primary"
+          @click="e6 = 3"
+          :disabled="workflow_file === null"
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          text
+          @click="e6 = 1"
+        >
+          Previous
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Configure algorithm input</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 3"
+        step="3"
+      >
+        Configure algorithm input
+      </v-stepper-step>
 
       <v-stepper-content step="3">
-         <p > One planning algorithm was detected for your application type, configure the parameters below: </p>
+        <p> One planning algorithm was detected for your application type, configure the parameters below: </p>
         <v-file-input
           multiple
           label="Insert performance model"
           accept=".yaml, yml"
           v-model="pcp_performance_file"
-        ></v-file-input>
+        />
         <v-file-input
           multiple
           label="Insert price model"
           accept=".yaml, yml"
           v-model="pcp_price_model_file"
-        ></v-file-input>
-        <v-btn color="primary" @click="e6 = 4" :disabled="pcp_performance_file === null">Continue</v-btn>
-        <v-btn text @click="e6 = 2">Previous</v-btn>
+        />
+        <v-btn
+          color="primary"
+          @click="e6 = 4"
+          :disabled="pcp_performance_file === null"
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          text
+          @click="e6 = 2"
+        >
+          Previous
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="4">Configure QoS demands</v-stepper-step>
+      <v-stepper-step step="4">
+        Configure QoS demands
+      </v-stepper-step>
       <v-stepper-content step="4">
-
         <v-form>
           <v-container>
             <v-row>
-
-              <v-col cols="12" sm="6" md="3">
-
-                <v-text-field label="Specify deadline for the entire workflow" placeholder="50" v-model="deadline"></v-text-field>
+              <v-col
+                cols="12"
+                sm="6"
+                md="3"
+              >
+                <v-text-field
+                  label="Specify deadline for the entire workflow"
+                  placeholder="50"
+                  v-model="deadline"
+                />
               </v-col>
             </v-row>
           </v-container>
         </v-form>
-        <v-btn color="primary" @click="getToscaViaFiles" :disabled="deadline === ''">Generate</v-btn>
-        <v-btn text @click="e6 = 3">Previous</v-btn>
+        <v-btn
+          color="primary"
+          @click="getToscaViaFiles"
+          :disabled="deadline === ''"
+        >
+          Generate
+        </v-btn>
+        <v-btn
+          text
+          @click="e6 = 3"
+        >
+          Previous
+        </v-btn>
         
         
         
         
-        <v-dialog v-model="dialog" max-width="290">
+        <v-dialog
+          v-model="dialog"
+          max-width="290"
+        >
           <v-card>
-            <v-card-title class="headline">Found solution</v-card-title>
+            <v-card-title class="headline">
+              Found solution
+            </v-card-title>
 
             <v-card-text>Your IaaS solution has sucessfully been downloaded</v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
 
 
-              <v-btn color="green darken-1" text @click="restart">Return</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="restart"
+              >
+                Return
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
