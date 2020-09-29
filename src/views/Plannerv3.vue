@@ -169,7 +169,7 @@
         <v-btn
           color="primary"
           @click="getToscaViaFiles"
-          :disabled="(pcp_performance_file === null || deadline === 0)"
+          :disabled="!(pcp_performance_file !== null && deadline !== '')"
           :loading="loading"
         >Generate</v-btn>
         <v-btn text @click="e6 = 5">Previous</v-btn>
@@ -346,7 +346,7 @@ export default {
     dialog_input2: false,
     dialog_icpcp: false,
     stepper_visible: true,
-    e6: 1,
+    e6: 6,
     chosen_application: "",
     chosen_provider: "",
     performance_values: "",
