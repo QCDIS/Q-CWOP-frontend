@@ -3,7 +3,8 @@ module.exports = {
     "devtool": "source-map"
   },
       devServer: {
-        proxy: 'http://localhost:5001'
+        proxy: 'http://localhost:5001',
+        disableHostCheck: true
     },
   "transpileDependencies": [
     "vuetify"
