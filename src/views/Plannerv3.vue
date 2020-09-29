@@ -346,7 +346,7 @@ export default {
     dialog_input2: false,
     dialog_icpcp: false,
     stepper_visible: true,
-    e6: 6,
+    e6: 1,
     chosen_application: "",
     chosen_provider: "",
     performance_values: "",
