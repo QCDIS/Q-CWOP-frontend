@@ -1,5 +1,5 @@
 var config = {
-    host: "http://localhost:5001",
+    host: "http://localhost:8080",
 };
 
 export default config

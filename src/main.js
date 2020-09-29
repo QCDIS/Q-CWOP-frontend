@@ -9,10 +9,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import vuetify from './plugins/vuetify';
 
-const cors = require('cors');
-
-app.use(cors());
-
 Vue.config.productionTip = false
 // Vue.use(BootstrapVue);
 Vue.use(BootstrapVue);
