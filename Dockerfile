@@ -19,5 +19,5 @@ COPY . .
 EXPOSE 8080
 
 
-CMD sed -ie "s#proxy: 'http://localhost:5001'#proxy: \"$BACKEND_URL\",#" vue.config.js  && \
+CMD sed -ie "s#proxy: 'http://localhost:5001'#proxy: \"$BACKEND_URL\"#" vue.config.js  && \
     npm run serve --port=8080
