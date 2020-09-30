@@ -1,5 +1,5 @@
 var config = {
-    host: "http://127.0.0.1:8080",
+    host: "http://qcdis.lab.uvalight.net:32767",
 };
 
 export default config
