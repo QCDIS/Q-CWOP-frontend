@@ -3,7 +3,7 @@ module.exports = {
     "devtool": "source-map"
   },
       devServer: {
-        proxy: 'http://localhost:5001',
+        proxy: 'http://qcdis.lab.uvalight.net:32767',
         disableHostCheck: true
     },
   "transpileDependencies": [
