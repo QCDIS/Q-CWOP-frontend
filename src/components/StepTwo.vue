@@ -1,37 +1,42 @@
 <template>
   <div style="padding: 2rem 3rem; text-align: left;">
-        <form>
-
-        <b-form-group id="input_input-group-1" label="Enter the raw url to the input below" label-for="input_input-1">
+    <form>
+      <b-form-group
+        id="input_input-group-1"
+        label="Enter the raw url to the input below"
+        label-for="input_input-1"
+      >
         <b-form-input
           id="input_input-1"
           name="input_input-1"
           v-model="$v.input_url.$model"
           :state="validateState('input_url')"
           aria-describedby="input-1-live-feedback"
-          placeholder= "https://pastebin.com/raw/HakSvgsA"
-        ></b-form-input>
+          placeholder="https://pastebin.com/raw/HakSvgsA"
+        />
 
         <b-form-invalid-feedback
           id="input-1-live-feedback"
-        >Please insert a valid url, linking to the input file</b-form-invalid-feedback>
-        </b-form-group>
-    <!-- <div class="form-group">
+        >
+          Please insert a valid url, linking to the input file
+        </b-form-invalid-feedback>
+      </b-form-group>
+      <!-- <div class="form-group">
         <label for="inputUrl">Enter url to input file</label>
         <input :class="['input', ($v.form.input_url.$error) ? 'is-danger' : '']"
         type="url" class="form-control" id="InputUrl" placeholder="linktoinputfile.yaml" v-model="form.input_url">
     </div> -->
 
     
-    <div class="form-group">
-    <label for="inputFile">Or specify input file</label>
-    <b-form-file
-      v-model="input_file"
-      :state="null"
-      placeholder="Choose a input file"
-      drop-placeholder="Drop file here..."
-    ></b-form-file>
-    </div>
+      <div class="form-group">
+        <label for="inputFile">Or specify input file</label>
+        <b-form-file
+          v-model="input_file"
+          :state="null"
+          placeholder="Choose a input file"
+          drop-placeholder="Drop file here..."
+        />
+      </div>
     </form>
     
     

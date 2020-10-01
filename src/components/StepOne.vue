@@ -1,6 +1,5 @@
 <template>
   <div style="padding: 2rem 3rem; text-align: left;">
-      
     <!-- <div class="field">
       <label class="label">Enter the url to the workflow file below</label>
       <div class="control">
@@ -18,20 +17,26 @@
         This url is invalid
       </p>
     </div> -->
-    <b-form-group id="form-label-text" label="Enter the raw url to the workflow below" label-for="workflow_input-1">
-        <b-form-input
-          id="workflow_input-1"
-          name="workflow_input-1"
-          v-model="$v.workflow_url.$model"
-          :state="validateState('workflow_url')"
-          aria-describedby="input-1-live-feedback"
-          placeholder= "https://raw.githubusercontent.com/x.cwl"
-        ></b-form-input>
+    <b-form-group
+      id="form-label-text"
+      label="Enter the raw url to the workflow below"
+      label-for="workflow_input-1"
+    >
+      <b-form-input
+        id="workflow_input-1"
+        name="workflow_input-1"
+        v-model="$v.workflow_url.$model"
+        :state="validateState('workflow_url')"
+        aria-describedby="input-1-live-feedback"
+        placeholder="https://raw.githubusercontent.com/x.cwl"
+      />
 
-        <b-form-invalid-feedback
-          id="input-1-live-feedback"
-        >Please insert a valid url, linking to the workflow file</b-form-invalid-feedback>
-      </b-form-group>
+      <b-form-invalid-feedback
+        id="input-1-live-feedback"
+      >
+        Please insert a valid url, linking to the workflow file
+      </b-form-invalid-feedback>
+    </b-form-group>
 
     <!-- <form>
     <b-row class="my-1">
@@ -56,24 +61,25 @@
 
 
     <div class="form-group">
-    <label id="form-label-text" for="workflowFile">Or specify the workflow file</label>
-    <b-form-file
-      v-model="workflow_file"
-      :state="null"
-      placeholder="Choose a workflow file"
-      drop-placeholder="Drop file here..."
-    ></b-form-file>
+      <label
+        id="form-label-text"
+        for="workflowFile"
+      >Or specify the workflow file</label>
+      <b-form-file
+        v-model="workflow_file"
+        :state="null"
+        placeholder="Choose a workflow file"
+        drop-placeholder="Drop file here..."
+      />
     </div>
     <!-- </form> -->
-
-</div>
+  </div>
     
-    <!-- <upload-btn>
+  <!-- <upload-btn>
   <template slot="icon">
     <v-icon>add</v-icon>
   </template>
 </upload-btn> -->
-
 </template>
 
 <style>

@@ -1,9 +1,16 @@
 <template>
   <v-app id="planner">
-    <v-stepper v-model="e6" vertical v-if="stepper_visible">
-      <v-stepper-step :complete="e6 > 1" step="1">
+    <v-stepper
+      v-model="e6"
+      vertical
+      v-if="stepper_visible"
+    >
+      <v-stepper-step
+        :complete="e6 > 1"
+        step="1"
+      >
         Select your application type
-        <small></small>
+        <small />
       </v-stepper-step>
 
       <v-stepper-content step="1">
@@ -12,11 +19,22 @@
           :items="application_types"
           label="Select your type of application"
           v-model="chosen_application"
-        ></v-overflow-btn>
-        <v-btn color="primary" @click="e6 = 2;" :disabled="chosen_application === ''">Continue</v-btn>
+        />
+        <v-btn
+          color="primary"
+          @click="e6 = 2;"
+          :disabled="chosen_application === ''"
+        >
+          Continue
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 2" step="2">Select application file</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 2"
+        step="2"
+      >
+        Select application file
+      </v-stepper-step>
 
       <v-stepper-content step="2">
         <v-file-input
@@ -24,12 +42,28 @@
           label="Insert your workflow file in cwl format"
           accept=".cwl"
           v-model="workflow_file"
-        ></v-file-input>
-        <v-btn color="primary" @click="e6 = 3" :disabled="workflow_file === null">Continue</v-btn>
-        <v-btn text @click="e6 = 1">Previous</v-btn>
+        />
+        <v-btn
+          color="primary"
+          @click="e6 = 3"
+          :disabled="workflow_file === null"
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          text
+          @click="e6 = 1"
+        >
+          Previous
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 3" step="3">Select preferred cloud provider</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 3"
+        step="3"
+      >
+        Select preferred cloud provider
+      </v-stepper-step>
 
       <v-stepper-content step="3">
         <v-overflow-btn
@@ -37,17 +71,29 @@
           :items="available_cloud_providers"
           label="Select your preferred cloud provider"
           v-model="chosen_provider"
-        ></v-overflow-btn>
+        />
         <v-btn
           color="primary"
           @click="e6 = 4; getAvailableVms();"
           :loading="loading"
           :disabled="chosen_provider === ''"
-        >Continue</v-btn>
-        <v-btn text @click="e6 = 2">Previous</v-btn>
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          text
+          @click="e6 = 2"
+        >
+          Previous
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 4" step="4">Configure VM's</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 4"
+        step="4"
+      >
+        Configure VM's
+      </v-stepper-step>
 
       <v-stepper-content step="4">
         <v-data-table
@@ -59,23 +105,36 @@
           class="elevation-1"
         >
           <template v-slot:top>
-            <v-toolbar flat color="white">
+            <v-toolbar
+              flat
+              color="white"
+            >
               <v-toolbar-title>Select VM's you would like the planner to use</v-toolbar-title>
-              <v-divider class="mx-4" inset vertical></v-divider>
+              <v-divider
+                class="mx-4"
+                inset
+                vertical
+              />
               <v-file-input
                 class="mt-4"
                 label="Load custom VM list"
                 accept=".yml, .yaml"
                 v-model="custom_vm_list"
-              ></v-file-input>
-              <v-divider class="mx-4" inset vertical></v-divider>
+              />
+              <v-divider
+                class="mx-4"
+                inset
+                vertical
+              />
               <!-- <v-spacer></v-spacer> -->
               <v-btn
                 class="mt-2"
                 color="primary"
                 @click="loadVMList"
                 :disabled="custom_vm_list === null"
-              >Load list</v-btn>
+              >
+                Load list
+              </v-btn>
             </v-toolbar>
           </template>
         </v-data-table>
@@ -85,86 +144,139 @@
           color="primary"
           @click="e6 = 5;"
           :disabled="selected_vms.length == 0"
-        >Continue</v-btn>
-        <v-btn class="mt-4" text @click="e6 = 3">Previous</v-btn>
+        >
+          Continue
+        </v-btn>
+        <v-btn
+          class="mt-4"
+          text
+          @click="e6 = 3"
+        >
+          Previous
+        </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="e6 > 5" step="5">Configure parameters</v-stepper-step>
+      <v-stepper-step
+        :complete="e6 > 5"
+        step="5"
+      >
+        Configure parameters
+      </v-stepper-step>
       <v-stepper-content step="5">
         <!-- <p>Two planning algorithm were detected for your application type, configure the parameters below:</p> -->
         <!-- <p> Select preffered cloud provider </p> -->
         <p>Do you want to generate a performance model? If you have your own you can skip this step.</p>
-        <v-btn class="justify-start" color="green" dark @click="getNumberOfTasks">Generate</v-btn>
-        <v-flex xs12 offset-xs8>
+        <v-btn
+          class="justify-start"
+          color="green"
+          dark
+          @click="getNumberOfTasks"
+        >
+          Generate
+        </v-btn>
+        <v-flex
+          xs12
+          offset-xs8
+        >
           <!-- <v-file-input
           multiple
           label="Insert price model"
           accept=".yaml, .yml"
           v-model="pcp_price_model_file"
           ></v-file-input>-->
-          <v-btn color="primary" @click="e6 = 6">Continue</v-btn>
-          <v-btn text @click="e6 = 4">Previous</v-btn>
+          <v-btn
+            color="primary"
+            @click="e6 = 6"
+          >
+            Continue
+          </v-btn>
+          <v-btn
+            text
+            @click="e6 = 4"
+          >
+            Previous
+          </v-btn>
         </v-flex>
 
-        <v-dialog v-model="dialog_input" max-width="490">
+        <v-dialog
+          v-model="dialog_input"
+          max-width="490"
+        >
           <v-card>
-            <v-card-title class="headline">Customise</v-card-title>
+            <v-card-title class="headline">
+              Customise
+            </v-card-title>
 
-            <v-card-text>We have detected {{number_of_tasks}} tasks in your workflow</v-card-text>
+            <v-card-text>We have detected {{ number_of_tasks }} tasks in your workflow</v-card-text>
             <v-switch
               class="mx-4"
               v-model="text_field1"
               label="Select custom performance values for cheapest vm"
-            ></v-switch>
+            />
             <v-text-field
               class="mx-4"
               v-model="performance_values"
               :label="`Provide ${number_of_tasks.toString()} performance values seperated by comma`"
               outlined
               :disabled="text_field1 === false"
-            ></v-text-field>
+            />
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
 
-              <v-btn color="green darken-1" text @click="generatePCPInput">Proceed</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="generatePCPInput"
+              >
+                Proceed
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
-        <v-dialog v-model="dialog_input2" max-width="490">
+        <v-dialog
+          v-model="dialog_input2"
+          max-width="490"
+        >
           <v-card>
-            <v-card-title class="headline">Success</v-card-title>
+            <v-card-title class="headline">
+              Success
+            </v-card-title>
 
             <v-card-text>Input file has been successfully generated</v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
 
               <v-btn
                 color="green darken-1"
                 text
                 @click="() => {dialog_input2 = false; e6 = 6}"
-              >Proceed</v-btn>
+              >
+                Proceed
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-stepper-content>
 
-      <v-stepper-step step="6">Configure QoS demands</v-stepper-step>
+      <v-stepper-step step="6">
+        Configure QoS demands
+      </v-stepper-step>
       <v-stepper-content step="6">
         <v-file-input
           multiple
           label="Insert price and performance model"
           accept=".yaml, .yml"
           v-model="pcp_performance_file"
-        ></v-file-input>
+        />
         <v-form>
           <v-text-field
             class="my-4"
             label="Specify deadline for the entire workflow"
             placeholder="50"
             v-model="deadline"
-          ></v-text-field>
+          />
         </v-form>
                  
         <v-btn
@@ -175,54 +287,98 @@
          <!-- :disabled="!(pcp_performance_file !== null && deadline !== '')" -->
         <v-btn text @click="e6 = 5">Previous</v-btn>
 
-        <v-dialog v-model="dialog" max-width="290">
+        <v-dialog
+          v-model="dialog"
+          max-width="290"
+        >
           <v-card>
-            <v-card-title class="headline">Error</v-card-title>
+            <v-card-title class="headline">
+              Error
+            </v-card-title>
 
             <v-card-text>Didn't receive proper response from backend</v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
 
-              <v-btn color="green darken-1" text @click="restart">Return</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="restart"
+              >
+                Return
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
 
-                <v-dialog v-model="dialog_icpcp" max-width="290">
+        <v-dialog
+          v-model="dialog_icpcp"
+          max-width="290"
+        >
           <v-card>
-            <v-card-title class="headline">Error</v-card-title>
+            <v-card-title class="headline">
+              Error
+            </v-card-title>
 
             <v-card-text>Didn't find a solution for the given parameters, adjust the input and try again</v-card-text>
 
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-spacer />
 
-              <v-btn color="green darken-1" text @click="restart">Return</v-btn>
+              <v-btn
+                color="green darken-1"
+                text
+                @click="restart"
+              >
+                Return
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-stepper-content>
     </v-stepper>
 
-    <v-container fluid v-if="radio_button_visible">
-      <h3 class="blue--text text--darken-3">Filter on available KPI's</h3>
+    <v-container
+      fluid
+      v-if="radio_button_visible"
+    >
+      <h3 class="blue--text text--darken-3">
+        Filter on available KPI's
+      </h3>
       <!-- <p>Filter on key performance indicators.
       </p>-->
-      <v-radio-group v-model="radio_value" :mandatory="true">
-        <v-radio label="Makespan" value="makespan"></v-radio>
-        <v-radio label="Total costs" value="total_cost"></v-radio>
-        <v-radio label="Custom" value="custom"></v-radio>
+      <v-radio-group
+        v-model="radio_value"
+        :mandatory="true"
+      >
+        <v-radio
+          label="Makespan"
+          value="makespan"
+        />
+        <v-radio
+          label="Total costs"
+          value="total_cost"
+        />
+        <v-radio
+          label="Custom"
+          value="custom"
+        />
       </v-radio-group>
       <v-row>
-        <v-col class="text-left" cols="auto">
+        <v-col
+          class="text-left"
+          cols="auto"
+        >
           <v-btn
             v-if="radio_button_visible"
             outlined
             left
             color="primary"
             @click="filterToscaTemplates"
-          >Filter</v-btn>
+          >
+            Filter
+          </v-btn>
         </v-col>
         <v-col>
           <v-btn
@@ -231,7 +387,9 @@
             left
             color="primary"
             @click="restart"
-          >Adjust parameters</v-btn>
+          >
+            Adjust parameters
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -244,11 +402,20 @@
     >
       <template v-slot:default="props">
         <v-row>
-          <v-col v-for="item in props.items" :key="item.name" cols="5" sm="7" md="3" lg="4">
+          <v-col
+            v-for="item in props.items"
+            :key="item.name"
+            cols="5"
+            sm="7"
+            md="3"
+            lg="4"
+          >
             <v-card>
-              <v-card-title class="subheading font-weight-bold">{{ item.id }}</v-card-title>
+              <v-card-title class="subheading font-weight-bold">
+                {{ item.id }}
+              </v-card-title>
 
-              <v-divider></v-divider>
+              <v-divider />
 
               <v-list dense>
                 <v-list-item>
@@ -264,12 +431,16 @@
 
                 <v-list-item>
                   <v-list-item-content>Total costs:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.total_cost }}</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.total_cost }}
+                  </v-list-item-content>
                 </v-list-item>
 
                 <v-list-item>
                   <v-list-item-content>Makespan:</v-list-item-content>
-                  <v-list-item-content class="align-end">{{ item.makespan }}</v-list-item-content>
+                  <v-list-item-content class="align-end">
+                    {{ item.makespan }}
+                  </v-list-item-content>
                 </v-list-item>
               </v-list>
             </v-card>

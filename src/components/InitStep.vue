@@ -1,6 +1,5 @@
 <template>
   <div style="padding: 2rem 3rem; text-align: left;">
-      
     <!-- <div class="field">
       <label class="label">Enter the url to the workflow file below</label>
       <div class="control">
@@ -20,30 +19,34 @@
     </div> -->
 
     <form>
-    <div class="form-group">
+      <div class="form-group">
         <label for="workflowUrl">Enter url to workflow file</label>
-        <input :class="['input', ($v.form.workflow_url.$error) ? 'is-danger' : '']"
-        type="url" class="form-control" id="WorkflowUrl" placeholder="linktoworkflow.cwl" v-model="form.workflow_url">
-    </div>
-    <div class="form-group">
-    <label for="workflowFile">Or specify workflow file</label>
-    <b-form-file
-      v-model="workflow_file"
-      :state="null"
-      placeholder="Choose a workflow file"
-      drop-placeholder="Drop file here..."
-    ></b-form-file>
-    </div>
+        <input
+          :class="['input', ($v.form.workflow_url.$error) ? 'is-danger' : '']"
+          type="url"
+          class="form-control"
+          id="WorkflowUrl"
+          placeholder="linktoworkflow.cwl"
+          v-model="form.workflow_url"
+        >
+      </div>
+      <div class="form-group">
+        <label for="workflowFile">Or specify workflow file</label>
+        <b-form-file
+          v-model="workflow_file"
+          :state="null"
+          placeholder="Choose a workflow file"
+          drop-placeholder="Drop file here..."
+        />
+      </div>
     </form>
-
-</div>
+  </div>
     
-    <!-- <upload-btn>
+  <!-- <upload-btn>
   <template slot="icon">
     <v-icon>add</v-icon>
   </template>
 </upload-btn> -->
-
 </template>
 
 <script>
