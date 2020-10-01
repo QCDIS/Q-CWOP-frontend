@@ -166,12 +166,13 @@
             v-model="deadline"
           ></v-text-field>
         </v-form>
+                 
         <v-btn
           color="primary"
           @click="getToscaViaFiles"
-          :disabled="!(pcp_performance_file !== null && deadline !== '')"
           :loading="loading"
         >Generate</v-btn>
+         <!-- :disabled="!(pcp_performance_file !== null && deadline !== '')" -->
         <v-btn text @click="e6 = 5">Previous</v-btn>
 
         <v-dialog v-model="dialog" max-width="290">
@@ -360,7 +361,7 @@ export default {
     pcp_performance_file: null,
     pcp_price_model_file: null,
     formdata: null,
-    deadline: "",
+    deadline: "60",
     radio_button_visible: false,
     activate_data_iterator: false,
     radio_value: "",
@@ -520,7 +521,7 @@ export default {
       if(!this.send_workflow){
       this.formdata.append("workflow_file", this.workflow_file[0]);
       }
-      this.formdata.append("input_file", this.pcp_performance_file[0]);
+      // this.formdata.append("input_file", this.pcp_performance_file[0]);
       console.log("sending api request");
       axios
         .post(`${config.host}/upload/${this.deadline}`, this.formdata, {
@@ -537,7 +538,7 @@ export default {
           this[l] = false;
           this.loader = null;
           this.formdata.delete("workflow_file")
-          this.formdata.delete("input_file")
+          // this.formdata.delete("input_file")
           // this.dialog = true;
         })
         .catch((error) => {

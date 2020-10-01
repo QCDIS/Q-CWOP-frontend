@@ -50,7 +50,7 @@
                 show-size
                 counter
                 multiple
-                label="Insert price and performance models in yaml format"
+                label="Insert performance models in yaml format"
                 accept=".yaml, .yml"
                 v-model="performance_files"
                 :rules="rules"
