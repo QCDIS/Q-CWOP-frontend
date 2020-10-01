@@ -165,7 +165,7 @@
       <v-stepper-content step="5">
         <!-- <p>Two planning algorithm were detected for your application type, configure the parameters below:</p> -->
         <!-- <p> Select preffered cloud provider </p> -->
-        <p>Do you want to generate a performance model? If you have your own you can skip this step.</p>
+        <p class="font-weight-bold">Do you want to generate a performance model? If you have your own you can skip this step.</p>
         <v-btn
           class="justify-start"
           color="green"
@@ -264,6 +264,7 @@
         Configure QoS demands
       </v-stepper-step>
       <v-stepper-content step="6">
+        <p class="font-weight-bold"> For the usability study you can ignore this input and just press generate </p> 
         <v-file-input
           multiple
           label="Insert price and performance model"
