@@ -37,6 +37,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="2">
+        <p class="font-weight-light"> Examples can be downloaded in the description of the usability study form. </p>
         <v-file-input
           multiple
           label="Insert your workflow file in cwl format"
@@ -165,7 +166,7 @@
       <v-stepper-content step="5">
         <!-- <p>Two planning algorithm were detected for your application type, configure the parameters below:</p> -->
         <!-- <p> Select preffered cloud provider </p> -->
-        <p class="font-weight-bold">Do you want to generate a performance model? If you have your own you can skip this step.</p>
+        <p class="font-weight-light">Do you want to generate a performance model? If you have your own you can skip this step.</p>
         <v-btn
           class="justify-start"
           color="green"
