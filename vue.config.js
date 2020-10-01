@@ -2,10 +2,10 @@ module.exports = {
   "configureWebpack": {
     "devtool": "source-map"
   },
-//      devServer: {
+      devServer: {
 //        proxy: 'http://localhost:5001',
-//        disableHostCheck: true
-//    },
+        disableHostCheck: true
+    },
   "transpileDependencies": [
     "vuetify"
   ]
