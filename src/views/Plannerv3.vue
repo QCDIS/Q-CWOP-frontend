@@ -212,7 +212,7 @@
             <v-switch
               class="mx-4"
               v-model="text_field1"
-              label="Select custom performance values for cheapest vm"
+              label="Select custom performance values for the fastest vm in your selection"
             />
             <v-text-field
               class="mx-4"
@@ -299,6 +299,31 @@
             </v-card-title>
 
             <v-card-text>Didn't receive proper response from backend</v-card-text>
+
+            <v-card-actions>
+              <v-spacer />
+
+              <v-btn
+                color="green darken-1"
+                text
+                @click="restart"
+              >
+                Return
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog
+          v-model="dialog_performance"
+          max-width="290"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              Error
+            </v-card-title>
+
+            <v-card-text>We didnt manage to parse performance values, try adjust them</v-card-text>
 
             <v-card-actions>
               <v-spacer />
@@ -520,8 +545,9 @@ export default {
     dialog_input: false,
     dialog_input2: false,
     dialog_icpcp: false,
+    dialog_performance: false,
     stepper_visible: true,
-    e6: 1,
+    e6: 2,
     chosen_application: "",
     chosen_provider: "",
     performance_values: "",
@@ -625,6 +651,21 @@ export default {
         type: "application/json",
       });
       this.formdata.append("selected_vms", blob);
+      if(!(this.performance_values === "")){
+          let perf_values = [];
+        try{
+        perf_values = this.performance_values.split(",", this.number_of_tasks);
+        }
+        catch(error){
+          this.dialog_performance = true;
+
+        }
+        console.log(perf_values);
+        console.log(this.number_of_tasks)
+        this.formdata.append("performance_values", JSON.stringify(perf_values));
+
+
+      }
 
       console.log("sending api request");
       axios
@@ -644,6 +685,7 @@ export default {
           this.dialog_input = false;
           this.dialog_input2 = true;
           this.formdata.delete("selected_vms")
+          this.formdata.delete("performance_values")
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -695,6 +737,7 @@ export default {
       this.formdata.append("workflow_file", this.workflow_file[0]);
       }
       // this.formdata.append("input_file", this.pcp_performance_file[0]);
+      this.formdata.append("selected_vms", JSON.stringify(this.selected_vms));
       console.log("sending api request");
       axios
         .post(`${config.host}/upload/${this.deadline}`, this.formdata, {
@@ -711,6 +754,7 @@ export default {
           this[l] = false;
           this.loader = null;
           this.formdata.delete("workflow_file")
+          this.formdata.delete("selected_vms")
           // this.formdata.delete("input_file")
           // this.dialog = true;
         })
