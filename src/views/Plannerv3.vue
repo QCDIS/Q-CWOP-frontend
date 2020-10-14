@@ -373,8 +373,8 @@
       <h3 class="blue--text text--darken-3">
         Filter on available KPI's
       </h3>
-      <!-- <p>Filter on key performance indicators.
-      </p>-->
+      <p> The planner has generated {{number_of_solutions}} infrastructure plans.
+      </p>
       <v-radio-group
         v-model="radio_value"
         :mandatory="true"
@@ -559,6 +559,7 @@ export default {
     number_of_tasks: 0,
     pcp_performance_file: null,
     pcp_price_model_file: null,
+    number_of_solutions: 0,
     formdata: null,
     deadline: "60",
     radio_button_visible: false,
@@ -747,6 +748,7 @@ export default {
           },
         })
         .then((res) => {
+          this.number_of_solutions = res.data
           this.stepper_visible = false;
           this.radio_button_visible = true;
           console.log(res.data);
