@@ -37,7 +37,7 @@
       </v-stepper-step>
 
       <v-stepper-content step="2">
-        <p class="font-weight-light"> Examples can be downloaded in the description of the usability study form. </p>
+        <p class="font-weight-light"> Insert application file you wish to generate a plan for </p>
         <v-file-input
           multiple
           label="Insert your workflow file in cwl format"
@@ -265,7 +265,7 @@
         Configure QoS demands
       </v-stepper-step>
       <v-stepper-content step="6">
-        <p class="font-weight-bold"> For the usability study you can ignore this input and just press generate </p> 
+        <!-- <p class="font-weight-light"> Select price and performance model </p>  -->
         <v-file-input
           multiple
           label="Insert price and performance model"
@@ -583,13 +583,13 @@ export default {
     vms: [
       {
         id: "1",
-        num_cpus: "2",
+        num_cores: "2",
         mem_size: "100MB",
         disk_size: "200MB",
       },
       {
         id: "2",
-        num_cpus: "4",
+        num_cores: "4",
         mem_size: "200MB",
         disk_size: "400MB",
       },
@@ -602,7 +602,7 @@ export default {
         sortable: false,
         value: "id",
       },
-      { text: "num_cpus", value: "num_cpus" },
+      { text: "num_cores", value: "num_cores" },
       { text: "mem_size", value: "mem_size" },
       { text: "disk_size", value: "disk_size" },
     ],
