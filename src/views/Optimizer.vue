@@ -73,10 +73,10 @@
               />
             </v-col>
           </v-row>
-        </v-form>
-        <v-row
+             <v-row
           align="center"
           justify="center"
+          class="mb-8"
         >
           <v-col cols="2">
             <v-btn
@@ -97,6 +97,8 @@
             </v-btn>
           </v-col>
         </v-row>
+        </v-form>
+     
         <v-data-iterator
           :items="items"
           :items-per-page.sync="items_per_page"

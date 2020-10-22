@@ -285,8 +285,8 @@
           color="primary"
           @click="getToscaViaFiles"
           :loading="loading"
+          :disabled="!(pcp_performance_file !== null && deadline !== '')" 
         >Generate</v-btn>
-         <!-- :disabled="!(pcp_performance_file !== null && deadline !== '')" -->
         <v-btn text @click="e6 = 5">Previous</v-btn>
 
         <v-dialog
@@ -561,7 +561,7 @@ export default {
     pcp_price_model_file: null,
     number_of_solutions: 0,
     formdata: null,
-    deadline: "60",
+    deadline: "",
     radio_button_visible: false,
     activate_data_iterator: false,
     radio_value: "",
@@ -737,9 +737,13 @@ export default {
       if(!this.send_workflow){
       this.formdata.append("workflow_file", this.workflow_file[0]);
       }
-      // this.formdata.append("input_file", this.pcp_performance_file[0]);
+      this.formdata.append("input_file", this.pcp_performance_file[0]);
       this.formdata.append("selected_vms", JSON.stringify(this.selected_vms));
       console.log("sending api request");
+      var t0 = performance.now()
+
+
+
       axios
         .post(`${config.host}/upload/${this.deadline}`, this.formdata, {
           headers: {
@@ -748,6 +752,8 @@ export default {
           },
         })
         .then((res) => {
+          var t1 = performance.now()
+          console.log("TOSCA generation took " + (t1 - t0) + " milliseconds.")
           this.number_of_solutions = res.data
           this.stepper_visible = false;
           this.radio_button_visible = true;
@@ -757,7 +763,7 @@ export default {
           this.loader = null;
           this.formdata.delete("workflow_file")
           this.formdata.delete("selected_vms")
-          // this.formdata.delete("input_file")
+          this.formdata.delete("input_file")
           // this.dialog = true;
         })
         .catch((error) => {
